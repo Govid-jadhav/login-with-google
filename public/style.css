@@ -1,0 +1,89 @@
+ {
+     background: linear-gradient(135deg, #6a11cb, #2575fc);
+     height: 100vh;
+     display: flex;
+     justify-content: center;
+     align-items: center;
+ }
+
+ .auth-card {
+     width: 100%;
+     max-width: 420px;
+     border-radius: 15px;
+     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+     background: white;
+     padding: 20px;
+ }
+
+ .nav-tabs .nav-link.active {
+     background-color: #2575fc;
+     color: white !important;
+     border-radius: 10px;
+ }
+
+ .form-control {
+     border-radius: 10px;
+ }
+
+ .btn-primary {
+     background: #2575fc;
+     border: none;
+     border-radius: 10px;
+ }
+
+ .btn-primary:hover {
+     background: #1d5dd6;
+ }
+
+ .btn-google {
+     background: #db4437;
+     color: white;
+     border-radius: 10px;
+ }
+
+ .btn-google:hover {
+     background: #c33d31;
+     color: white;
+ }
+
+ .btn-github {
+     background: #333;
+     color: white;
+     border-radius: 10px;
+ }
+
+ .btn-github:hover {
+     background: #242424;
+     color: white;
+ }
+
+ .divider {
+     text-align: center;
+     margin: 15px 0;
+     position: relative;
+ }
+
+ .divider::before,
+ .divider::after {
+     content: "";
+     position: absolute;
+     top: 50%;
+     width: 40%;
+     height: 1px;
+     background: #ccc;
+ }
+
+ .divider::before {
+     left: 0;
+ }
+
+ .divider::after {
+     right: 0;
+ }
+
+ .divider span {
+     background: white;
+     padding: 0 10px;
+     font-size: 0.9rem;
+     color: #777;
+ }

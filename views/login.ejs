@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+
+    <div class="auth-card">
+        <!-- Tabs -->
+        <ul class="nav nav-tabs justify-content-center mb-3" id="authTabs">
+            <li class="nav-item">
+                <a class="nav-link active" href="#" data-form="loginForm">Login</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#" data-form="signupForm">Signup</a>
+            </li>
+        </ul>
+
+        <!-- Login Form -->
+        <form id="loginForm">
+            <h4 class="text-center mb-3">Welcome Back</h4>
+            <div class="mb-3">
+                <label>Email</label>
+                <input type="email" class="form-control" placeholder="Enter email">
+            </div>
+            <div class="mb-3">
+                <label>Password</label>
+                <input type="password" class="form-control" placeholder="Enter password">
+            </div>
+            <button type="submit" class="btn btn-primary w-100">Login</button>
+        </form>
+
+        <!-- Signup Form -->
+        <form id="signupForm" style="display: none;">
+            <h4 class="text-center mb-3">Create Account</h4>
+            <div class="mb-3">
+                <label>Full Name</label>
+                <input type="text" class="form-control" placeholder="Enter full name">
+            </div>
+            <div class="mb-3">
+                <label>Email</label>
+                <input type="email" class="form-control" placeholder="Enter email">
+            </div>
+            <div class="mb-3">
+                <label>Password</label>
+                <input type="password" class="form-control" placeholder="Create password">
+            </div>
+            <button type="submit" class="btn btn-primary w-100 mb-2">Signup</button>
+
+            <!-- Divider -->
+            <div class="divider"><span>OR</span></div>
+
+            <!-- Social Signup Buttons in One Row -->
+            <div class="row g-2">
+                <div class="col">
+                    <button type="button" class="btn btn-google w-100">
+                        <i class="fab fa-google me-2"></i> Google
+                    </button>
+                </div>
+                <div class="col">
+                    <button type="button" class="btn btn-github w-100">
+                        <i class="fab fa-github me-2"></i> GitHub
+                    </button>
+                </div>
+            </div>
+        </form>
+
+    </div>
+
+</body>
+
+</html>
