@@ -9,7 +9,7 @@ const passport = require("passport");
 const engine = require("ejs-mate");
 const LocalStrategy = require("passport-local");
 
-const MONGO_URL = "mongodb://127.0.0.1:27017/room";
+const MONGO_URL = "mongodb://localhost:27017/login_page";
 
 const app = express();
 
@@ -22,6 +22,7 @@ app.set("views", path.join(__dirname, "views"));
 app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride("_method"));
 app.use(express.static(path.join(__dirname, "/public")));
+const User = require("./models/schema.js");
 
 // Routes
 app.get("/", (req, res) => {
@@ -29,9 +30,18 @@ app.get("/", (req, res) => {
 });
 
 // Database connection
-mongoose.connect(MONGO_URL)
-    .then(() => console.log("MongoDB Connected"))
-    .catch(err => console.error("Mongo Error:", err));
+
+main()
+    .then(() => {
+        console.log("connected to DB");
+    })
+    .catch((err) => {
+        console.log(err);
+    });
+
+async function main() {
+    await mongoose.connect(MONGO_URL);
+}
 
 // Start server
 app.listen(3000, () => {
