@@ -8,21 +8,18 @@ const flash = require("connect-flash");
 const passport = require("passport");
 const engine = require("ejs-mate");
 const dotenv = require("dotenv");
-// const GoogleStrategy = require("passport-google-oauth20").Strategy;
-const GitHubStrategy = require("passport-github2").Strategy;
+const { Strategy: GoogleStrategy } = require("passport-google-oauth20");
+const { Strategy: GitHubStrategy } = require("passport-github2");
+const User = require("./models/schema");
 
 dotenv.config();
 const app = express();
 
+// --- Database ---
 const MONGO_URL = "mongodb://localhost:27017/login_page";
-// const User = require("./models/schema.js"); // Must have googleId, githubId, username, email, photo
-
-// --- Database Connection ---
-async function main() {
-    await mongoose.connect(MONGO_URL);
-    console.log("Connected to DB");
-}
-main().catch((err) => console.log(err));
+mongoose.connect(MONGO_URL)
+    .then(() => console.log("Connected to DB"))
+    .catch(err => console.error(err));
 
 // --- EJS Setup ---
 app.engine("ejs", engine);
@@ -47,7 +44,6 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
-// Serialize / Deserialize
 passport.serializeUser((user, done) => done(null, user.id));
 passport.deserializeUser(async (id, done) => {
     try {
@@ -59,9 +55,6 @@ passport.deserializeUser(async (id, done) => {
 });
 
 // --- Google OAuth ---
-const GoogleStrategy = require("passport-google-oauth20").Strategy;
-const User = require("./models/schema");
-
 passport.use(new GoogleStrategy({
     clientID: process.env.GOOGLE_CLIENT_ID,
     clientSecret: process.env.GOOGLE_CLIENT_SECRET,
@@ -69,28 +62,20 @@ passport.use(new GoogleStrategy({
 }, async (accessToken, refreshToken, profile, done) => {
     try {
         let user = await User.findOne({ googleId: profile.id });
-
         if (!user) {
             user = new User({
                 googleId: profile.id,
                 displayName: profile.displayName,
                 email: profile.emails?.[0]?.value || null,
-                photo: profile.photos?.[0]?.value || null // <-- Store Google profile picture
+                photo: profile.photos?.[0]?.value || null
             });
             await user.save();
-        } else {
-            // Optional: Update photo if changed
-            if (profile.photos?.[0]?.value && user.photo !== profile.photos[0].value) {
-                user.photo = profile.photos[0].value;
-                await user.save();
-            }
         }
         return done(null, user);
     } catch (err) {
         return done(err, null);
     }
 }));
-
 
 // --- GitHub OAuth ---
 passport.use(new GitHubStrategy({
@@ -125,26 +110,26 @@ app.get("/", (req, res) => {
     res.render("login", { user: req.user });
 });
 
-// Google
 app.get("/auth/google", passport.authenticate("google", { scope: ["profile", "email"] }));
-app.get("/auth/google/callback", passport.authenticate("google", { failureRedirect: "/" }), (req, res) => res.redirect("/profile"));
+app.get("/auth/google/callback",
+    passport.authenticate("google", { failureRedirect: "/" }),
+    (req, res) => res.redirect("/profile")
+);
 
-// GitHub
 app.get("/auth/github", passport.authenticate("github", { scope: ["user:email"] }));
-app.get("/auth/github/callback", passport.authenticate("github", { failureRedirect: "/" }), (req, res) => res.redirect("/profile"));
+app.get("/auth/github/callback",
+    passport.authenticate("github", { failureRedirect: "/" }),
+    (req, res) => res.redirect("/profile")
+);
 
-// Profile
 app.get("/profile", ensureAuth, (req, res) => {
     res.render("profile", { user: req.user });
 });
 
-// Logout
 app.get("/logout", (req, res) => {
     req.logout(() => res.redirect("/"));
 });
 
 // --- Start Server ---
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-    console.log(`Server running on http://localhost:${PORT}`);
-});
+app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`));
