@@ -5,26 +5,28 @@ const passportLocalMongoose = require("passport-local-mongoose");
 const userSchema = new mongoose.Schema({
     username: {
         type: String,
-        required: true,
-        unique: true // works for both email or username
+        required: false // Make optional for OAuth users
     },
     email: {
         type: String,
-        required: true,
-        unique: true
+        required: false, // Make optional for OAuth users
+        unique: false // Don't enforce strict unique here, because some OAuth providers don't give email
     },
     googleId: {
-        type: String, // store Google OAuth ID
+        type: String,
         unique: true,
         sparse: true
     },
     githubId: {
-        type: String, // store GitHub OAuth ID
+        type: String,
         unique: true,
         sparse: true
     },
-    profilePic: {
-        type: String // optional profile picture from OAuth
+    displayName: {
+        type: String
+    },
+    photo: {
+        type: String
     },
     createdAt: {
         type: Date,
@@ -32,7 +34,7 @@ const userSchema = new mongoose.Schema({
     }
 });
 
-// Adds password hash + authenticate methods (for local login)
+// Allow passport-local-mongoose for local login
 userSchema.plugin(passportLocalMongoose, { usernameField: "email" });
 
 module.exports = mongoose.model("User", userSchema);
