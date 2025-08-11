@@ -11,8 +11,27 @@
     "mongoose": "^8.17.1",
     "nodemon": "^3.1.10",
     "passport": "^0.7.0",
+    "passport-github2": "^0.1.12",
     "passport-google-oauth20": "^2.0.0",
     "passport-local": "^1.0.0",
     "passport-local-mongoose": "^8.0.0"
-  }
+  },
+  "name": "google-login",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Govid-jadhav/login-with-google.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Govid-jadhav/login-with-google/issues"
+  },
+  "homepage": "https://github.com/Govid-jadhav/login-with-google#readme",
+  "description": ""
 }

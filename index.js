@@ -8,10 +8,14 @@ const flash = require("connect-flash");
 const passport = require("passport");
 const engine = require("ejs-mate");
 const LocalStrategy = require("passport-local");
-
+const dotenv = require("dotenv");
+const GoogleStrategy = require("passport-google-oauth20").Strategy;
+const GitHubStrategy = require("passport-github2").Strategy;
+dotenv.config();
+const app = express();
 const MONGO_URL = "mongodb://localhost:27017/login_page";
 
-const app = express();
+// const app = express();
 
 // EJS setup
 app.engine("ejs", engine);
@@ -23,6 +27,14 @@ app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride("_method"));
 app.use(express.static(path.join(__dirname, "/public")));
 const User = require("./models/schema.js");
+
+
+// Session middleware
+app.use(session({
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: false
+}));
 
 // Routes
 app.get("/", (req, res) => {
