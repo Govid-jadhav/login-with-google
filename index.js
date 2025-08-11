@@ -109,6 +109,10 @@ function ensureAuth(req, res, next) {
 app.get("/", (req, res) => {
     res.render("login", { user: req.user });
 });
+app.get('/profile', (req, res) => {
+    const user = req.user; // however you get the logged-in user info
+    res.render('profile', { user });
+});
 
 app.get("/auth/google", passport.authenticate("google", { scope: ["profile", "email"] }));
 app.get("/auth/google/callback",
