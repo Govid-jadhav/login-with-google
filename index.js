@@ -11,6 +11,7 @@ const dotenv = require("dotenv");
 const { Strategy: GoogleStrategy } = require("passport-google-oauth20");
 const { Strategy: GitHubStrategy } = require("passport-github2");
 const User = require("./models/schema");
+const bcrypt = require("bcrypt");
 
 dotenv.config();
 const app = express();
@@ -109,14 +110,36 @@ function ensureAuth(req, res, next) {
 app.get("/", (req, res) => {
     res.render("login", { user: req.user });
 });
-app.post('/profile', (req, res) => {
-    const updatedData = req.body; // Requires express.urlencoded()
-    // TODO: Save the updated data to the database
 
-    console.log("Received profile update:", updatedData);
+app.post("/profile", async (req, res) => {
+    try {
+        const { fullName, email, password } = req.body;
 
-    // Redirect back to profile page after saving
-    res.redirect('/profile');
+        // Check if email exists
+        const existingUser = await User.findOne({ email });
+        if (existingUser) {
+            req.flash("error", "Email already exists. Please log in.");
+            return res.redirect("/signup"); // or wherever your signup form is
+        }
+
+        // Encrypt password
+        const hashedPassword = await bcrypt.hash(password, 10);
+
+        // Save user
+        await User.create({
+            fullName,
+            email,
+            password: hashedPassword
+        });
+
+        req.flash("success", "Account created successfully! Please log in.");
+        res.redirect("/login");
+
+    } catch (error) {
+        console.error(error);
+        req.flash("error", "Something went wrong. Please try again.");
+        res.redirect("/login");
+    }
 });
 
 
