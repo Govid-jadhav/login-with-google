@@ -42,24 +42,23 @@
         </form>
 
         <!-- Signup Form -->
-        <form action="./profile" method="POST" id="signupForm" style="display: none;">
+        <form action="/profile" method="POST" id="signupForm" style="display: none;">
             <h4 class="text-center mb-3">Create Account</h4>
             <div class="mb-3">
                 <label>Full Name</label>
-                <input type="text" class="form-control" placeholder="Enter full name">
+                <input type="text" name="fullName" class="form-control" placeholder="Enter full name" required>
             </div>
             <div class="mb-3">
                 <label>Email</label>
-                <input type="email" class="form-control" placeholder="Enter email">
+                <input type="email" name="email" class="form-control" placeholder="Enter email" required>
             </div>
             <div class="mb-3">
                 <label>Password</label>
-                <input type="password" class="form-control" placeholder="Create password">
+                <input type="password" name="password" class="form-control" placeholder="Create password" required>
             </div>
             <button type="submit" class="btn btn-primary w-100 mb-2">Signup</button>
 
-            <!-- Divider -->
-            <!-- Social Signup Buttons in One Row -->
+            <!-- Social Signup -->
             <div class="row g-2">
                 <div class="col">
                     <a href="/auth/google" class="btn btn-google w-100">
@@ -72,7 +71,6 @@
                     </a>
                 </div>
             </div>
-
         </form>
 
 
